@@ -1,0 +1,10 @@
+services:
+  postgres_compte:
+    image: 'postgres:latest'
+    restart: always
+    environment:
+      - 'POSTGRES_DB=compte_db'
+      - 'POSTGRES_PASSWORD=root'
+      - 'POSTGRES_USER=root'
+    ports:
+      - '5432:5432'
