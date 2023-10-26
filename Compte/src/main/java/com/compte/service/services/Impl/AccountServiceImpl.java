@@ -6,6 +6,7 @@ import com.compte.service.mappers.AccountMapper;
 import com.compte.service.models.Account;
 import com.compte.service.repositories.AccountRepository;
 import com.compte.service.services.AccountService;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -15,7 +16,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
-@Service
+@Service @Transactional
 @AllArgsConstructor
 @Slf4j
 public class AccountServiceImpl implements AccountService {
@@ -26,6 +27,7 @@ public class AccountServiceImpl implements AccountService {
     public AccountResponseDto save(AccountRequestDto request) {
         Account account = accountMapper.toEntity(request);
         log.info(account.getId());
+        log.info(account.getCurrency());
         account.setCreatedAt(new Date());
         Account savedAccount = accountRepository.save(account);
         return accountMapper.toDto(savedAccount);
