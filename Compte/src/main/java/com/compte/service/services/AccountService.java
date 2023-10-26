@@ -1,11 +1,12 @@
 package com.compte.service.services;
 
-import com.compte.service.dtos.AccountDto;
+import com.compte.service.dtos.AccountRequestDto;
+import com.compte.service.dtos.AccountResponseDto;
 
 import java.util.List;
 
 public interface AccountService {
 
-    AccountDto save(AccountDto request);
-    List<AccountDto> listAccounts();
+    AccountResponseDto save(AccountRequestDto request);
+    List<AccountResponseDto> listAccounts();
 }

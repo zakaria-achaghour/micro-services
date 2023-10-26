@@ -18,7 +18,7 @@ public class CompteApplication {
         SpringApplication.run(CompteApplication.class, args);
     }
 
-    @Bean
+   // @Bean
     CommandLineRunner start(AccountRepository accountRepository) {
         return args -> {
             for (int i = 0; i < 10; i++) {
