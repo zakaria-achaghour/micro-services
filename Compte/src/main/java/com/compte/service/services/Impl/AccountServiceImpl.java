@@ -2,6 +2,7 @@ package com.compte.service.services.Impl;
 
 import com.compte.service.dtos.AccountRequestDto;
 import com.compte.service.dtos.AccountResponseDto;
+import com.compte.service.exceptions.AccountNotFoundException;
 import com.compte.service.mappers.AccountMapper;
 import com.compte.service.models.Account;
 import com.compte.service.repositories.AccountRepository;
@@ -26,8 +27,6 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public AccountResponseDto save(AccountRequestDto request) {
         Account account = accountMapper.toEntity(request);
-        log.info(account.getId());
-        log.info(account.getCurrency());
         account.setCreatedAt(new Date());
         Account savedAccount = accountRepository.save(account);
         return accountMapper.toDto(savedAccount);
@@ -36,5 +35,30 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public List<AccountResponseDto> listAccounts() {
         return accountRepository.findAll().stream().map(accountMapper::toDto).collect(Collectors.toList());
+    }
+
+    @Override
+    public AccountResponseDto getAccountById(String id) throws AccountNotFoundException {
+        Account account = accountRepository.findById(id).orElse(null);
+        if (account==null) throw new AccountNotFoundException(String.format("Account Not Found with id :%s",id));
+        return accountMapper.toDto(account);
+    }
+
+    @Override
+    public AccountResponseDto update(AccountRequestDto requestDTO) throws AccountNotFoundException {
+        Account account = accountRepository.findById(requestDTO.getId()).orElse(null);
+        if (account==null) throw new AccountNotFoundException(String.format("Account Not Found with id :%s",requestDTO.getId()));
+        account.setBalance(requestDTO.getBalance());
+        if(requestDTO.getCurrency() != null) account.setCurrency(requestDTO.getCurrency());
+        if(requestDTO.getAccountType() != null) account.setAccountType(requestDTO.getAccountType());
+        Account savedAccount = accountRepository.save(account);
+        return accountMapper.toDto(savedAccount);
+    }
+
+    @Override
+    public void deleteAccount(String id) throws AccountNotFoundException {
+        Account account = accountRepository.findById(id).orElse(null);
+        if (account==null) throw new AccountNotFoundException(String.format("Account Not Found with id :%s",id));
+        accountRepository.deleteById(id);
     }
 }
