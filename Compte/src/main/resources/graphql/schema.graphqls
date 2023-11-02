@@ -1,0 +1,12 @@
+type Query {
+    accounts: [Account],
+    accountById (id: String) :Account
+}
+
+type Account {
+    id : String,
+    createdAt : String,
+    balance : Float,
+    currency : String,
+    type : String
+}
