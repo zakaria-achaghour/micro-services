@@ -11,6 +11,6 @@ public interface AccountService {
     AccountResponseDto save(AccountRequestDto request);
     List<AccountResponseDto> listAccounts();
     AccountResponseDto getAccountById(String id) throws AccountNotFoundException;
-    AccountResponseDto update(AccountRequestDto requestDTO) throws AccountNotFoundException;
+    AccountResponseDto update(AccountRequestDto requestDTO, String id) throws AccountNotFoundException;
     void deleteAccount(String id) throws AccountNotFoundException;
 }

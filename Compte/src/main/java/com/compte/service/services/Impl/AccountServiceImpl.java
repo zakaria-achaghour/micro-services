@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 
@@ -27,6 +28,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public AccountResponseDto save(AccountRequestDto request) {
         Account account = accountMapper.toEntity(request);
+        account.setId(UUID.randomUUID().toString());
         account.setCreatedAt(new Date());
         Account savedAccount = accountRepository.save(account);
         return accountMapper.toDto(savedAccount);
@@ -45,9 +47,9 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public AccountResponseDto update(AccountRequestDto requestDTO) throws AccountNotFoundException {
-        Account account = accountRepository.findById(requestDTO.getId()).orElse(null);
-        if (account==null) throw new AccountNotFoundException(String.format("Account Not Found with id :%s",requestDTO.getId()));
+    public AccountResponseDto update(AccountRequestDto requestDTO, String id) throws AccountNotFoundException {
+        Account account = accountRepository.findById(id).orElse(null);
+        if (account==null) throw new AccountNotFoundException(String.format("Account Not Found with id :%s", id));
         account.setBalance(requestDTO.getBalance());
         if(requestDTO.getCurrency() != null) account.setCurrency(requestDTO.getCurrency());
         if(requestDTO.getAccountType() != null) account.setAccountType(requestDTO.getAccountType());

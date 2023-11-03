@@ -54,7 +54,7 @@ public class AccountRestController {
     })
     public ResponseEntity<?> updateAccount(@RequestBody AccountRequestDto request, @PathVariable String id){
         try {
-            AccountResponseDto accountResponseDto = accountService.update(request);
+            AccountResponseDto accountResponseDto = accountService.update(request, id);
             return ResponseEntity.ok(accountResponseDto);
         } catch (Exception e) {
             return ResponseEntity.internalServerError().body(new ErrorMessage(e.getMessage()));
